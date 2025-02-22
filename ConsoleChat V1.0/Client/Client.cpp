@@ -14,7 +14,6 @@ int main() {
     WSADATA wsaData;
     int iResult;
 
-    // Инициализация Winsock
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
         printf("WSAStartup failed: %d\n", iResult);
@@ -27,7 +26,6 @@ int main() {
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_protocol = IPPROTO_TCP;
 
-    // Получение адресной информации сервера
     iResult = getaddrinfo(SERVER_ADDRESS, DEFAULT_PORT, &hints, &result);
     if (iResult != 0) {
         printf("getaddrinfo failed: %d\n", iResult);
@@ -43,7 +41,6 @@ int main() {
         return 1;
     }
 
-    // Подключение к серверу
     iResult = connect(ConnectSocket, result->ai_addr, (int)result->ai_addrlen);
     if (iResult == SOCKET_ERROR) {
         printf("Unable to connect to server!\n");
@@ -74,10 +71,9 @@ int main() {
 
         std::cout << "Send: " << msg << std::endl;
 
-        // Ожидание ответа от сервера
         iResult = recv(ConnectSocket, recvbuf, recvbuflen, 0);
         if (iResult > 0) {
-            recvbuf[iResult] = '\0'; // Завершаем строку
+            recvbuf[iResult] = '\0';
             printf("%s\n", recvbuf);
         }
         else if (iResult == 0) {
@@ -88,7 +84,6 @@ int main() {
         }
     } while (iResult >= 0);
 
-    // Завершаем соединение
     shutdown(ConnectSocket, SD_SEND);
     closesocket(ConnectSocket);
     WSACleanup();
