@@ -20,7 +20,6 @@ int main() {
     WSADATA wsaData;
     int iResult;
 
-    // Инициализация Winsock
     iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
     if (iResult != 0) {
         printf("WSAStartup failed: %d\n", iResult);
@@ -34,7 +33,6 @@ int main() {
     hints.ai_protocol = IPPROTO_TCP;
     hints.ai_flags = AI_PASSIVE;
 
-    // Получение адресной информации
     iResult = getaddrinfo(NULL, DEFAULT_PORT, &hints, &result);
     if (iResult != 0) {
         printf("getaddrinfo failed: %d\n", iResult);
@@ -52,7 +50,6 @@ int main() {
         return 1;
     }
 
-    // Setup the TCP listening socket
     iResult = bind(listeningSock, result->ai_addr, (int)result->ai_addrlen);
     if (iResult == SOCKET_ERROR) {
         printf("bind failed with error: %d\n", WSAGetLastError());
